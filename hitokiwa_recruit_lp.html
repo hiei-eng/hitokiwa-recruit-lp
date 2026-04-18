@@ -3,7 +3,8 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>株式会社ヒトキワ｜外国人向け就職支援</title>
+  <title>株式会社ヒトキワ｜外国人採用支援・就職支援</title>
+  <meta name="description" content="ヒトキワは外国人の日本就職を8ヵ国語で専門サポート。ビザ・住居・面接対策まで一括対応。紹介料0円で全国30社以上の採用実績。採用担当者・求職者ともに無料でご相談いただけます。" />
   <style>
     @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;500;700;900&display=swap');
 
@@ -14,7 +15,7 @@
       background: #f4f7fb;
       color: #1a2a4a;
       overflow-x: hidden;
-      padding-top: 70px;
+      padding-top: 100px;
     }
 
     /* ===== FIXED HEADER ===== */
@@ -23,52 +24,51 @@
       top: 0; left: 0; right: 0;
       z-index: 1000;
       background: #fff;
-      box-shadow: 0 2px 12px rgba(0,0,0,0.08);
-      height: 70px;
+      box-shadow: 0 1px 8px rgba(0,0,0,0.07);
+      height: 100px;
       display: flex;
       align-items: center;
     }
 
     .header-inner {
       width: 100%;
-      max-width: 1200px;
-      margin: 0 auto;
-      padding: 0 24px;
+      padding: 0;
       display: flex;
       align-items: center;
+      justify-content: space-between;
     }
 
     .header-logo {
       display: flex;
-      flex-direction: column;
+      align-items: center;
       text-decoration: none;
       flex-shrink: 0;
-      margin-right: 36px;
+      padding-left: 24px;
+      margin-bottom: 30px;
     }
 
-    .header-logo img { height: 28px; width: auto; }
-
-    .header-logo span {
-      font-size: 10px;
-      color: #999;
-      margin-top: 3px;
-      white-space: nowrap;
-    }
+    .header-logo img { height: 60px; width: auto; display: block; vertical-align: middle; }
 
     .header-nav {
       display: flex;
       align-items: center;
-      gap: 28px;
+      gap: 16px;
       flex: 1;
+      padding-left: 20px;
+      justify-content: flex-start;
+      overflow-x: auto;
+      scrollbar-width: none;
     }
+    .header-nav::-webkit-scrollbar { display: none; }
 
     .header-nav a {
-      font-size: 14px;
+      font-size: 13px;
       font-weight: 500;
       color: #333;
       text-decoration: none;
       white-space: nowrap;
       transition: color 0.2s;
+      flex-shrink: 0;
     }
 
     .header-nav a:hover { color: #0066cc; }
@@ -78,17 +78,19 @@
       align-items: center;
       gap: 10px;
       flex-shrink: 0;
-      margin-left: auto;
+      padding-right: 24px;
     }
 
     .hbtn {
       display: inline-flex;
       align-items: center;
+      justify-content: center;
       gap: 6px;
       font-size: 13px;
       font-weight: 700;
-      padding: 10px 18px;
-      border-radius: 6px;
+      height: 50px;
+      padding: 0 20px;
+      border-radius: 8px;
       text-decoration: none;
       white-space: nowrap;
       border: none;
@@ -115,112 +117,142 @@
       color: #fff;
     }
 
-    /* 3パネル背景 */
-    .hero-bg {
+    /* スライドショー背景 */
+    .hero-slideshow {
       position: absolute;
       inset: 0;
-      display: grid;
-      grid-template-columns: 1fr 1fr 1fr;
       z-index: 0;
     }
 
-    .hero-bg-panel {
+    .hero-slide {
+      position: absolute;
+      inset: 0;
       background-size: cover;
-      background-position: center top;
+      background-position: center;
+      opacity: 0;
+      transition: opacity 1.4s ease-in-out;
     }
 
-    /* パネル間の縦線を自然に消す */
-    .hero-bg-panel:nth-child(1) { background-position: 30% center; }
-    .hero-bg-panel:nth-child(2) { background-position: center center; }
-    .hero-bg-panel:nth-child(3) { background-position: 70% center; }
+    .hero-slide.active { opacity: 1; }
 
-    /* オーバーレイ */
+    /* 鮮やかなオーバーレイ */
     .hero-overlay {
       position: absolute;
       inset: 0;
-      background: linear-gradient(160deg,
-        rgba(5,15,45,0.82) 0%,
-        rgba(15,40,100,0.74) 50%,
-        rgba(5,15,45,0.82) 100%);
+      background: linear-gradient(135deg,
+        rgba(10,20,80,0.78) 0%,
+        rgba(0,80,180,0.65) 50%,
+        rgba(80,0,120,0.72) 100%);
       z-index: 1;
     }
 
-    .hero > *:not(.hero-bg):not(.hero-overlay) {
+    .hero > *:not(.hero-slideshow):not(.hero-overlay) {
       position: relative;
       z-index: 2;
+    }
+
+    /* テキストアニメーション */
+    @keyframes fadeSlideUp {
+      from { opacity: 0; transform: translateY(28px); }
+      to   { opacity: 1; transform: translateY(0); }
     }
 
     .hero-tag {
       display: inline-block;
       background: rgba(255,255,255,0.15);
-      border: 1px solid rgba(255,255,255,0.35);
+      border: 1px solid rgba(255,255,255,0.4);
       color: #fff;
       font-size: 13px;
       font-weight: 700;
-      padding: 6px 22px;
+      padding: 7px 24px;
       border-radius: 50px;
       margin-bottom: 24px;
       letter-spacing: 1px;
-      backdrop-filter: blur(4px);
+      backdrop-filter: blur(6px);
+      opacity: 0;
+      animation: fadeSlideUp 0.7s ease forwards 0.2s;
     }
 
     .hero h1 {
-      font-size: clamp(28px, 5.5vw, 52px);
+      font-size: clamp(32px, 6vw, 60px);
       font-weight: 900;
       line-height: 1.35;
-      margin-bottom: 16px;
+      margin-bottom: 18px;
       color: #fff;
+      text-shadow: 0 2px 16px rgba(0,0,80,0.3);
+      opacity: 0;
+      animation: fadeSlideUp 0.7s ease forwards 0.5s;
     }
 
     .hero h1 em {
       font-style: normal;
-      color: #e6a800;
+      color: #ffd030;
+      text-shadow: 0 0 24px rgba(255,200,0,0.5);
     }
 
     .hero-sub {
       font-size: clamp(15px, 2.5vw, 20px);
-      color: rgba(255,255,255,0.82);
+      color: rgba(255,255,255,0.88);
       margin-bottom: 44px;
-      line-height: 1.8;
+      line-height: 1.9;
+      opacity: 0;
+      animation: fadeSlideUp 0.7s ease forwards 0.8s;
     }
 
     /* Stats row */
     .hero-stats {
       display: flex;
-      gap: 16px;
+      gap: 20px;
       flex-wrap: wrap;
       justify-content: center;
       margin-bottom: 44px;
+      opacity: 0;
+      animation: fadeSlideUp 0.7s ease forwards 1.1s;
     }
 
     .stat-card {
-      background: rgba(255,255,255,0.12);
-      border: 1px solid rgba(255,255,255,0.25);
-      backdrop-filter: blur(8px);
-      border-radius: 16px;
-      padding: 20px 28px;
-      min-width: 160px;
+      background: rgba(255,255,255,0.1);
+      border: 1px solid rgba(255,255,255,0.3);
+      backdrop-filter: blur(12px);
+      border-radius: 20px;
+      padding: 24px 36px;
+      min-width: 180px;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .stat-card::before {
+      content: '';
+      position: absolute;
+      top: 0; left: 0; right: 0;
+      height: 3px;
+      background: linear-gradient(90deg, #ffd030, #ff9500);
+      border-radius: 20px 20px 0 0;
     }
 
     .stat-card .stat-label {
-      font-size: 12px;
-      color: rgba(255,255,255,0.7);
-      margin-bottom: 6px;
-      font-weight: 500;
+      font-size: 13px;
+      color: rgba(255,255,255,0.75);
+      margin-bottom: 10px;
+      font-weight: 600;
+      letter-spacing: 0.5px;
     }
 
     .stat-card .stat-num {
-      font-size: clamp(26px, 4vw, 38px);
+      font-size: clamp(34px, 5vw, 52px);
       font-weight: 900;
       color: #fff;
       line-height: 1;
+      text-shadow: 0 2px 12px rgba(0,0,0,0.2);
     }
 
-    .stat-card .stat-num span {
-      font-size: 0.5em;
+    .stat-card .stat-unit {
+      font-size: 0.45em;
       font-weight: 700;
-      color: #e6a800;
+      color: #ffd030;
       vertical-align: middle;
+      margin-left: 2px;
+      text-shadow: 0 0 12px rgba(255,208,48,0.6);
     }
 
     /* CTA buttons */
@@ -230,6 +262,8 @@
       flex-wrap: wrap;
       justify-content: center;
       margin-bottom: 14px;
+      opacity: 0;
+      animation: fadeSlideUp 0.7s ease forwards 1.4s;
     }
 
     .cta-btn {
@@ -279,9 +313,10 @@
     }
 
     .cta-note {
-      font-size: 12px;
-      color: rgba(255,255,255,0.55);
+      font-size: 15px;
+      color: #fff;
       margin-bottom: 28px;
+      font-weight: 500;
     }
 
     .lang-badges {
@@ -305,12 +340,13 @@
       display: inline-block;
       background: linear-gradient(135deg, #0066cc, #4f8ef7);
       color: #fff;
-      font-size: 12px;
+      font-size: 15px;
       font-weight: 700;
-      padding: 5px 18px;
+      padding: 10px 32px;
       border-radius: 50px;
-      margin-bottom: 14px;
-      letter-spacing: 1px;
+      margin-bottom: 18px;
+      letter-spacing: 1.5px;
+      box-shadow: 0 4px 16px rgba(0,102,204,0.25);
     }
 
     .section-title {
@@ -334,167 +370,602 @@
       margin: 0 auto 40px;
     }
 
-    /* ===== FEATURES ===== */
+    /* ===== FEATURES (パターン2: REASON + 写真半分レイアウト) ===== */
     #features {
-      background-color: #fff;
-      background-image: radial-gradient(circle, #c8d9ee 1px, transparent 1px);
-      background-size: 28px 28px;
-      padding: 80px 20px;
-    }
-
-    .features-inner {
-      max-width: 960px;
-      margin: 0 auto;
-    }
-
-    .features-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(270px, 1fr));
-      gap: 20px;
-    }
-
-    .feature-card {
       background: #f4f7fb;
-      border: 1px solid #e2eaf5;
-      border-radius: 18px;
-      padding: 28px 24px;
-      transition: transform 0.2s, box-shadow 0.2s;
+      padding: 80px 0 0;
     }
 
-    .feature-card:hover {
-      transform: translateY(-4px);
-      box-shadow: 0 8px 28px rgba(0,102,204,0.1);
+    .features-header {
+      text-align: center;
+      padding: 0 20px;
+      margin-bottom: 52px;
     }
 
-    .feature-icon { font-size: 34px; margin-bottom: 12px; }
-
-    .feature-card h3 {
-      font-size: 17px;
-      font-weight: 700;
-      margin-bottom: 10px;
-      color: #e6a800;
+    .p2-item {
+      display: flex;
+      align-items: stretch;
+      margin-bottom: 4px;
     }
 
-    .feature-card p {
+    .p2-item:nth-child(even) { flex-direction: row-reverse; }
+
+    .p2-photo {
+      width: 50%;
+      min-height: 460px;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .p2-photo img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      transition: transform 0.5s ease;
+      display: block;
+    }
+
+    .p2-item:hover .p2-photo img { transform: scale(1.04); }
+
+    .p2-body {
+      width: 50%;
+      background: #fff;
+      padding: 64px 72px;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+    }
+
+    .p2-item:nth-child(even) .p2-body { background: #eef4fb; }
+
+    .p2-reason-num {
+      font-size: 20px;
+      font-weight: 900;
+      color: #0066cc;
+      letter-spacing: 4px;
+      margin-bottom: 14px;
+    }
+
+    .p2-tag {
+      display: inline-block;
+      background: #e8f0ff;
+      color: #0066cc;
       font-size: 14px;
-      line-height: 1.75;
+      font-weight: 700;
+      padding: 6px 16px;
+      border-radius: 4px;
+      margin-bottom: 18px;
+    }
+
+    .p2-title {
+      font-size: clamp(26px, 3vw, 38px);
+      font-weight: 900;
+      color: #1a2a4a;
+      margin-bottom: 20px;
+      line-height: 1.4;
+    }
+
+    .p2-title em { font-style: normal; color: #0066cc; }
+
+    .p2-divider {
+      width: 44px;
+      height: 3px;
+      background: linear-gradient(90deg, #0066cc, #4f8ef7);
+      border-radius: 2px;
+      margin-bottom: 24px;
+    }
+
+    .p2-text {
+      font-size: 16px;
+      line-height: 2.0;
       color: #4a5a7a;
     }
 
-    /* ===== FLOW ===== */
+    @media (max-width: 768px) {
+      .p2-item, .p2-item:nth-child(even) { flex-direction: column; }
+      .p2-photo, .p2-body { width: 100%; }
+      .p2-photo { min-height: 280px; }
+      .p2-body { padding: 44px 28px; }
+      .p2-reason-num { font-size: 16px; }
+      .p2-title { font-size: 24px; }
+    }
+
+    /* ===== CASES (導入事例 カルーセル＋タブフィルター) ===== */
+    #cases {
+      background: #fff;
+      padding: 80px 20px;
+    }
+    .cases-inner {
+      max-width: 1120px;
+      margin: 0 auto;
+    }
+
+    /* タブ */
+    .cases-tabs {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 10px;
+      margin-bottom: 40px;
+      max-width: 860px;
+      margin-left: auto;
+      margin-right: auto;
+    }
+    .cases-tab {
+      padding: 10px 16px;
+      border-radius: 24px;
+      border: 2px solid #ccd4e0;
+      background: #fff;
+      color: #4a5a7a;
+      font-size: 13px;
+      font-weight: 700;
+      cursor: pointer;
+      transition: all 0.2s;
+      font-family: 'Noto Sans JP', sans-serif;
+      text-align: center;
+      white-space: nowrap;
+    }
+    .cases-tab:hover { border-color: #0066cc; color: #0066cc; }
+    .cases-tab.active {
+      background: #0066cc;
+      border-color: #0066cc;
+      color: #fff;
+      box-shadow: 0 3px 12px rgba(0,102,204,0.28);
+    }
+
+    /* カルーセル */
+    .cases-carousel-wrap { position: relative; }
+    .cases-carousel {
+      display: flex;
+      gap: 24px;
+      overflow-x: auto;
+      scroll-snap-type: x mandatory;
+      scroll-behavior: smooth;
+      -webkit-overflow-scrolling: touch;
+      padding-bottom: 4px;
+      scrollbar-width: none;
+    }
+    .cases-carousel::-webkit-scrollbar { display: none; }
+
+    .case-card {
+      flex: 0 0 calc(33.333% - 16px);
+      min-width: 280px;
+      scroll-snap-align: start;
+      background: #f4f7fb;
+      border-radius: 16px;
+      overflow: hidden;
+      box-shadow: 0 4px 16px rgba(0,0,0,0.07);
+      transition: transform 0.22s, box-shadow 0.22s;
+      display: flex;
+      flex-direction: column;
+      text-decoration: none;
+      color: inherit;
+    }
+    .case-card:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 10px 32px rgba(0,102,204,0.14);
+    }
+    .case-card.cases-hidden { display: none; }
+
+    .case-thumb {
+      width: 100%;
+      aspect-ratio: 16/9;
+      object-fit: cover;
+      display: block;
+    }
+    .case-body {
+      padding: 18px 20px 22px;
+      display: flex;
+      flex-direction: column;
+      flex: 1;
+    }
+    .case-tags {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 7px;
+      margin-bottom: 11px;
+    }
+    .case-tag-industry {
+      background: #e8f0fc;
+      color: #0066cc;
+      font-size: 11px;
+      font-weight: 700;
+      padding: 3px 10px;
+      border-radius: 20px;
+    }
+    .case-tag-area {
+      background: #fff3d0;
+      color: #b37d00;
+      font-size: 11px;
+      font-weight: 700;
+      padding: 3px 10px;
+      border-radius: 20px;
+    }
+    .case-company {
+      font-size: 13px;
+      font-weight: 900;
+      color: #1a2a4a;
+      margin-bottom: 7px;
+    }
+    .case-title {
+      font-size: 13px;
+      line-height: 1.75;
+      color: #4a5a7a;
+      display: -webkit-box;
+      -webkit-line-clamp: 3;
+      -webkit-box-orient: vertical;
+      overflow: hidden;
+      flex: 1;
+      margin-bottom: 14px;
+    }
+    .case-read {
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+      color: #0066cc;
+      font-size: 12px;
+      font-weight: 700;
+      margin-top: auto;
+    }
+    .case-card:hover .case-read { text-decoration: underline; }
+
+    /* ナビ（矢印＋ドット） */
+    .cases-nav {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      gap: 12px;
+      margin-top: 28px;
+    }
+    .cases-arrow {
+      width: 44px; height: 44px;
+      border-radius: 50%;
+      background: #0066cc;
+      color: #fff;
+      border: none;
+      cursor: pointer;
+      font-size: 18px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: background 0.2s, opacity 0.2s;
+      box-shadow: 0 3px 10px rgba(0,102,204,0.3);
+      font-family: inherit;
+    }
+    .cases-arrow:hover { background: #004fa3; }
+    .cases-arrow:disabled { opacity: 0.3; cursor: default; }
+    .cases-dots { display: flex; gap: 8px; align-items: center; }
+    .cases-dot {
+      width: 8px; height: 8px;
+      border-radius: 50%;
+      background: #ccd4e0;
+      cursor: pointer;
+      transition: background 0.2s, width 0.2s;
+      border: none;
+    }
+    .cases-dot.active {
+      background: #0066cc;
+      width: 24px;
+      border-radius: 4px;
+    }
+    .cases-count {
+      text-align: center;
+      font-size: 13px;
+      color: #4a5a7a;
+      margin-bottom: 20px;
+    }
+    .cases-count strong { color: #0066cc; font-weight: 900; }
+
+    @media (max-width: 860px) {
+      .case-card { flex: 0 0 calc(50% - 12px); }
+    }
+    @media (max-width: 560px) {
+      .case-card { flex: 0 0 85%; }
+    }
+
+    /* ===== FLOW (パターンB: 大番号タイムライン型) ===== */
     #flow {
-      background: #eef4fb;
+      background: #f4f7fb;
       padding: 80px 20px;
     }
 
     .flow-inner {
-      max-width: 680px;
+      max-width: 860px;
       margin: 0 auto;
+    }
+
+    .flow-steps {
+      display: flex;
+      flex-direction: column;
+      gap: 0;
     }
 
     .flow-step {
-      display: flex;
-      align-items: flex-start;
-      gap: 20px;
-      margin-bottom: 32px;
-      position: relative;
+      display: grid;
+      grid-template-columns: 110px 28px 1fr;
+      gap: 0 28px;
+      align-items: stretch;
     }
 
-    .flow-step:not(:last-child)::after {
-      content: '';
-      position: absolute;
-      left: 22px;
-      top: 52px;
-      width: 2px;
-      height: calc(100% + 8px);
-      background: linear-gradient(180deg, #0066cc, #c7ddf7);
+    .flow-num-col {
+      display: flex;
+      flex-direction: column;
+      align-items: flex-end;
+      padding-top: 6px;
     }
 
-    .step-num {
-      flex-shrink: 0;
-      width: 46px;
-      height: 46px;
-      background: linear-gradient(135deg, #0066cc, #4f8ef7);
-      border-radius: 50%;
-      display: flex;
-      align-items: center;
-      justify-content: center;
+    .flow-big-num {
+      font-size: 68px;
       font-weight: 900;
-      font-size: 18px;
-      color: #fff;
+      line-height: 1;
+      background: linear-gradient(135deg, #0066cc, #4f8ef7);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
     }
 
-    .step-body h4 {
-      font-size: 17px;
+    .flow-line-col {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+
+    .flow-dot {
+      width: 14px;
+      height: 14px;
+      background: #0066cc;
+      border-radius: 50%;
+      box-shadow: 0 0 0 4px rgba(0,102,204,0.18);
+      margin-top: 16px;
+      flex-shrink: 0;
+      z-index: 1;
+    }
+
+    .flow-vert {
+      flex: 1;
+      width: 2px;
+      background: linear-gradient(180deg, #0066cc, #c7ddf7);
+      margin-top: 4px;
+    }
+
+    .flow-step:last-child .flow-vert { display: none; }
+
+    .flow-body {
+      padding: 6px 0 52px;
+      text-align: left;
+    }
+
+    .flow-step:last-child .flow-body { padding-bottom: 0; }
+
+    .flow-step-tag {
+      display: inline-block;
+      background: #e8f0ff;
+      color: #0066cc;
+      font-size: 12px;
       font-weight: 700;
-      margin-bottom: 6px;
+      padding: 4px 12px;
+      border-radius: 4px;
+      margin-bottom: 10px;
+      letter-spacing: 1px;
+    }
+
+    .flow-body h3 {
+      font-size: clamp(20px, 2.5vw, 26px);
+      font-weight: 900;
       color: #1a2a4a;
+      margin-bottom: 10px;
+      line-height: 1.4;
     }
 
-    .step-body p {
-      font-size: 14px;
+    .flow-body h3 em {
+      font-style: normal;
+      color: #0066cc;
+    }
+
+    .flow-body p {
+      font-size: 15px;
+      line-height: 1.9;
       color: #4a5a7a;
-      line-height: 1.7;
     }
 
-    /* ===== VOICES ===== */
+    @media (max-width: 600px) {
+      .flow-step {
+        grid-template-columns: 70px 20px 1fr;
+        gap: 0 16px;
+      }
+      .flow-big-num { font-size: 44px; }
+    }
+
+    /* ===== VOICES (カルーセル＋国籍タブ＋職種バッジ) ===== */
     #voices {
-      background-color: #fff;
-      background-image: radial-gradient(circle, #c8d9ee 1px, transparent 1px);
-      background-size: 28px 28px;
+      background: #fff;
       padding: 80px 20px;
     }
-
     .voices-inner {
-      max-width: 960px;
+      max-width: 1080px;
       margin: 0 auto;
     }
 
-    .voices-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(270px, 1fr));
-      gap: 20px;
+    /* 国籍タブ */
+    .voices-tabs {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 10px;
+      margin-bottom: 32px;
+    }
+    .voices-tab {
+      padding: 7px 18px;
+      border-radius: 24px;
+      border: 2px solid #ccd4e0;
+      background: #fff;
+      color: #4a5a7a;
+      font-size: 13px;
+      font-weight: 700;
+      cursor: pointer;
+      transition: all 0.2s;
+      font-family: 'Noto Sans JP', sans-serif;
+    }
+    .voices-tab:hover { border-color: #0066cc; color: #0066cc; }
+    .voices-tab.active {
+      background: #0066cc;
+      border-color: #0066cc;
+      color: #fff;
+      box-shadow: 0 3px 12px rgba(0,102,204,0.28);
     }
 
+    /* カルーセル */
+    .voices-carousel-wrap { position: relative; }
+    .voices-carousel {
+      display: flex;
+      gap: 24px;
+      overflow-x: auto;
+      scroll-snap-type: x mandatory;
+      scroll-behavior: smooth;
+      -webkit-overflow-scrolling: touch;
+      padding-bottom: 4px;
+      scrollbar-width: none;
+    }
+    .voices-carousel::-webkit-scrollbar { display: none; }
+
+    /* カード */
     .voice-card {
-      background: #f4f7fb;
-      border: 1px solid #e2eaf5;
-      border-radius: 18px;
-      padding: 28px 24px;
+      flex: 0 0 calc(33.333% - 16px);
+      min-width: 280px;
+      scroll-snap-align: start;
+      border-radius: 20px;
+      overflow: hidden;
+      box-shadow: 0 6px 28px rgba(0,0,0,0.1);
+      transition: transform 0.3s, box-shadow 0.3s;
+      position: relative;
+      background: #fff;
+    }
+    .voice-card.voices-hidden { display: none; }
+    .voice-card:hover {
+      transform: translateY(-6px);
+      box-shadow: 0 20px 48px rgba(0,102,204,0.15);
     }
 
-    .voice-header {
+    .voice-photo {
+      height: 260px;
+      position: relative;
+      overflow: hidden;
+    }
+    .voice-photo img {
+      width: 100%; height: 100%;
+      object-fit: cover; object-position: center top;
+      transition: transform 0.4s;
+      display: block;
+    }
+    .voice-card:hover .voice-photo img { transform: scale(1.04); }
+
+    /* 職種バッジ（写真左上） */
+    .voice-job-badge {
+      position: absolute;
+      top: 14px; left: 14px;
+      background: #0066cc;
+      color: #fff;
+      font-size: 11px; font-weight: 700;
+      padding: 4px 12px;
+      border-radius: 20px;
+      box-shadow: 0 2px 8px rgba(0,102,204,0.4);
+    }
+
+    .voice-achievement {
+      position: absolute;
+      top: 14px; right: 14px;
+      background: #e6a800;
+      color: #fff;
+      font-size: 12px; font-weight: 900;
+      padding: 8px 14px;
+      border-radius: 10px;
+      line-height: 1.4;
+      text-align: center;
+      box-shadow: 0 4px 14px rgba(230,168,0,0.45);
+    }
+    .voice-achievement .ach-big {
+      font-size: 20px; display: block; line-height: 1; margin-bottom: 2px;
+    }
+
+    .voice-country {
+      position: absolute;
+      bottom: 14px; left: 14px;
+      background: rgba(0,0,0,0.55);
+      backdrop-filter: blur(4px);
+      color: #fff;
+      font-size: 12px; font-weight: 700;
+      padding: 5px 12px;
+      border-radius: 50px;
+    }
+
+    .voice-body {
+      background: #fff;
+      padding: 22px 22px 26px;
+    }
+    .voice-name-row {
       display: flex;
       align-items: center;
-      gap: 14px;
-      margin-bottom: 14px;
+      justify-content: space-between;
+      margin-bottom: 10px;
     }
+    .voice-name { font-size: 15px; font-weight: 900; color: #1a2a4a; }
+    .voice-stars { color: #f59e0b; font-size: 14px; letter-spacing: 1px; }
 
-    .voice-avatar {
-      width: 56px;
-      height: 56px;
-      border-radius: 50%;
-      overflow: hidden;
-      flex-shrink: 0;
-      border: 3px solid #e2eaf5;
+    .voice-bubble {
+      background: #f4f7fb;
+      border-radius: 0 16px 16px 16px;
+      padding: 14px 16px;
+      position: relative;
+      margin-top: 4px;
     }
-
-    .voice-avatar img {
-      width: 100%;
-      height: 100%;
-      object-fit: cover;
-      object-position: center top;
+    .voice-bubble::before {
+      content: '';
+      position: absolute;
+      top: -8px; left: 0;
+      border: 8px solid transparent;
+      border-right-color: #f4f7fb;
+      border-top: none;
     }
-
-    .voice-name { font-size: 14px; font-weight: 700; color: #1a2a4a; }
-    .voice-meta { font-size: 12px; color: #7a8fab; margin-top: 2px; }
-
-    .voice-stars { color: #f59e0b; font-size: 14px; margin-bottom: 10px; }
-
-    .voice-card p {
-      font-size: 14px;
-      line-height: 1.8;
+    .voice-bubble p {
+      font-size: 13px;
+      line-height: 1.85;
       color: #4a5a7a;
+    }
+
+    /* ナビ */
+    .voices-nav {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      gap: 12px;
+      margin-top: 28px;
+    }
+    .voices-arrow {
+      width: 44px; height: 44px;
+      border-radius: 50%;
+      background: #0066cc; color: #fff;
+      border: none; cursor: pointer; font-size: 18px;
+      display: flex; align-items: center; justify-content: center;
+      transition: background 0.2s, opacity 0.2s;
+      box-shadow: 0 3px 10px rgba(0,102,204,0.3);
+      font-family: inherit;
+    }
+    .voices-arrow:hover { background: #004fa3; }
+    .voices-arrow:disabled { opacity: 0.3; cursor: default; }
+    .voices-dots { display: flex; gap: 8px; align-items: center; }
+    .voices-dot {
+      width: 8px; height: 8px; border-radius: 50%;
+      background: #ccd4e0; cursor: pointer;
+      transition: background 0.2s, width 0.2s; border: none;
+    }
+    .voices-dot.active { background: #0066cc; width: 24px; border-radius: 4px; }
+
+    @media (max-width: 860px) {
+      .voice-card { flex: 0 0 calc(50% - 12px); }
+    }
+    @media (max-width: 560px) {
+      .voice-card { flex: 0 0 85%; }
+      .voices-tabs { gap: 7px; }
+      .voices-tab { font-size: 12px; padding: 6px 12px; }
     }
 
     /* ===== FAQ ===== */
@@ -668,8 +1139,38 @@
 
     footer p { font-size: 12px; color: rgba(255,255,255,0.35); }
 
+    /* ===== LINE FLOATING BUTTON ===== */
+    .line-float {
+      position: fixed;
+      bottom: 28px; right: 28px;
+      background: #06C755;
+      color: #fff;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      padding: 14px 22px;
+      border-radius: 50px;
+      text-decoration: none;
+      font-size: 14px;
+      font-weight: 900;
+      box-shadow: 0 6px 24px rgba(6,199,85,0.5);
+      z-index: 998;
+      transition: transform 0.2s, box-shadow 0.2s;
+      font-family: 'Noto Sans JP', sans-serif;
+    }
+    .line-float:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 10px 32px rgba(6,199,85,0.55);
+    }
+    .line-float svg {
+      width: 22px; height: 22px; flex-shrink: 0;
+    }
+    @media (max-width: 560px) {
+      .line-float { bottom: 18px; right: 18px; padding: 12px 16px; font-size: 13px; }
+    }
+
     /* ===== UTILITIES ===== */
-    html { scroll-behavior: smooth; scroll-padding-top: 70px; }
+    html { scroll-behavior: smooth; scroll-padding-top: 100px; }
 
     /* ===== MOBILE ===== */
     @media (max-width: 768px) {
@@ -679,6 +1180,11 @@
       .stat-card { min-width: 130px; padding: 16px 18px; }
       .hero-ctas { flex-direction: column; align-items: center; }
       .cta-btn, .cta-btn-line { width: 100%; max-width: 320px; justify-content: center; }
+      /* タブ：スマホは2列 */
+      .cases-tabs {
+        grid-template-columns: repeat(2, 1fr);
+      }
+      .cases-tab { font-size: 12px; padding: 9px 10px; }
     }
 
     @media (max-width: 600px) {
@@ -695,12 +1201,12 @@
   <div class="header-inner">
     <a href="#" class="header-logo">
       <img src="https://lp2.hito-kiwa.co.jp/insyoku/image_food/logo_black.svg" alt="hitokiwa" />
-      <span>外国人就職支援ならヒトキワ</span>
     </a>
     <nav class="header-nav">
-      <a href="#features">特徴</a>
-      <a href="#flow">応募の流れ</a>
-      <a href="#voices">社員の声</a>
+      <a href="#features">選ばれる理由</a>
+      <a href="#cases">導入事例</a>
+      <a href="#flow">ご利用の流れ</a>
+      <a href="#voices">就職者の声</a>
       <a href="#faq">FAQ</a>
       <a href="#apply">応募フォーム</a>
     </nav>
@@ -720,14 +1226,18 @@
 
 <!-- ===== HERO ===== -->
 <div class="hero">
-  <!-- 3パネル背景 -->
-  <div class="hero-bg">
-    <div class="hero-bg-panel" style="background-image:url('https://images.unsplash.com/photo-1522202176988-66273c2fd55f?w=800&q=80')"></div>
-    <div class="hero-bg-panel" style="background-image:url('https://images.unsplash.com/photo-1521737604893-d14cc237f11d?w=800&q=80')"></div>
-    <div class="hero-bg-panel" style="background-image:url('https://images.unsplash.com/photo-1600880292203-757bb62b4baf?w=800&q=80')"></div>
+  <!-- スライドショー背景（東南アジア系・各職種） -->
+  <div class="hero-slideshow">
+    <!-- 1枚目：飲食業 -->
+    <div class="hero-slide active" style="background-image:url('https://images.unsplash.com/photo-1751704316221-7e7e6887d0ed?w=1400&q=90')"></div>
+    <!-- 2枚目：宿泊業 -->
+    <div class="hero-slide" style="background-image:url('https://images.unsplash.com/photo-1760324457032-cdbf91381531?w=1400&q=90')"></div>
+    <!-- 3枚目：建設業 -->
+    <div class="hero-slide" style="background-image:url('https://images.unsplash.com/photo-1628146023674-ede6049609b1?w=1400&q=90')"></div>
+    <!-- 4枚目：製造業 -->
+    <div class="hero-slide" style="background-image:url('https://images.unsplash.com/photo-1745323221378-915a1ebd403e?w=1400&q=90')"></div>
   </div>
   <div class="hero-overlay"></div>
-  <div class="hero-tag">🌏 全職種・全国対応の就職支援</div>
   <h1>
     日本で働きたい<em>あなた</em>へ<br>
     就職の不安を<em>一緒に</em>解決します
@@ -737,19 +1247,25 @@
     あなたの母国語で丁寧にサポート
   </p>
 
-  <!-- Stats -->
+  <!-- Stats（カウントアップ強調） -->
   <div class="hero-stats">
     <div class="stat-card">
       <div class="stat-label">取引企業数</div>
-      <div class="stat-num">2,000<span>社以上</span></div>
+      <div class="stat-num">
+        <span class="count-up" data-target="2276" data-comma="true">0</span><span class="stat-unit">社以上</span>
+      </div>
     </div>
     <div class="stat-card">
       <div class="stat-label">累計紹介数</div>
-      <div class="stat-num">10,000<span>名以上</span></div>
+      <div class="stat-num">
+        <span class="count-up" data-target="10000" data-comma="true">0</span><span class="stat-unit">名以上</span>
+      </div>
     </div>
     <div class="stat-card">
       <div class="stat-label">お仕事定着率</div>
-      <div class="stat-num">80<span>%</span></div>
+      <div class="stat-num">
+        <span class="count-up" data-target="82.3" data-decimal="true">0</span><span class="stat-unit">%</span>
+      </div>
     </div>
   </div>
 
@@ -764,53 +1280,437 @@
   <p class="cta-note">※ 相談・登録は完全無料です</p>
 
   <div class="lang-badges">
-    <span class="lang-badge">🇻🇳 ベトナム語対応</span>
-    <span class="lang-badge">🇲🇲 ミャンマー語対応</span>
-    <span class="lang-badge">🇳🇵 ネパール語対応</span>
-    <span class="lang-badge">🇱🇰 シンハラ語対応</span>
-    <span class="lang-badge">🇧🇩 ベンガル語対応</span>
+    <span class="lang-badge">🌍 8ヵ国語対応</span>
   </div>
 </div>
 
 <!-- ===== FEATURES ===== -->
 <div id="features">
-  <div class="features-inner">
-    <div style="text-align:center">
-      <span class="section-label">ヒトキワが選ばれる理由</span>
-      <h2 class="section-title">私たちが<em>全力サポート</em>します</h2>
+  <div class="features-header">
+    <span class="section-label">ヒトキワが選ばれる理由</span>
+    <h2 class="section-title">私たちが<em>全力サポート</em>します</h2>
+    <div class="divider"></div>
+  </div>
+
+  <!-- 1: 8ヶ国語対応 -->
+  <div class="p2-item">
+    <div class="p2-photo">
+      <img src="https://images.unsplash.com/photo-1766066014237-00645c74e9c6?w=900&q=85" alt="多言語サポートスタッフ" />
+    </div>
+    <div class="p2-body">
+      <div class="p2-reason-num">REASON 01</div>
+      <div class="p2-tag">8ヶ国語対応</div>
+      <h3 class="p2-title">母国語で<em>安心して</em>相談できる</h3>
+      <div class="p2-divider"></div>
+      <p class="p2-text">ベトナム語・ミャンマー語・ネパール語・シンハラ語・ベンガル語等に対応したスタッフが在籍。日本語に不安があっても、母国語で丁寧にサポートします。</p>
+    </div>
+  </div>
+
+  <!-- 2: 全職種・全国対応 -->
+  <div class="p2-item">
+    <div class="p2-photo">
+      <img src="https://images.unsplash.com/photo-1758873268663-5a362616b5a7?w=900&q=85" alt="全職種・全国対応チーム" />
+    </div>
+    <div class="p2-body">
+      <div class="p2-reason-num">REASON 02</div>
+      <div class="p2-tag">2,276社以上の求人</div>
+      <h3 class="p2-title">全職種・全国<em>どこでも</em>対応</h3>
+      <div class="p2-divider"></div>
+      <p class="p2-text">製造業・飲食・介護・IT・事務など幅広い職種に対応。北海道から沖縄まで全国2,276社以上の企業との取引実績があります。</p>
+    </div>
+  </div>
+
+  <!-- 3: ビザ・在留サポート -->
+  <div class="p2-item">
+    <div class="p2-photo">
+      <img src="https://images.unsplash.com/photo-1664463760781-f159dfe3af30?w=900&q=85" alt="ビザ・在留サポート" />
+    </div>
+    <div class="p2-body">
+      <div class="p2-reason-num">REASON 03</div>
+      <div class="p2-tag">専任スタッフが対応</div>
+      <h3 class="p2-title">ビザ・在留資格も<em>丸ごと</em>サポート</h3>
+      <div class="p2-divider"></div>
+      <p class="p2-text">就労ビザの取得から在留資格の変更手続きまで、専任スタッフが丁寧にご案内。複雑な手続きも安心してお任せください。</p>
+    </div>
+  </div>
+
+  <!-- 4: 面接対策・書類添削 -->
+  <div class="p2-item">
+    <div class="p2-photo">
+      <img src="https://images.unsplash.com/photo-1758518730264-9235a1e5416b?w=900&q=85" alt="面接対策・書類添削" />
+    </div>
+    <div class="p2-body">
+      <div class="p2-reason-num">REASON 04</div>
+      <div class="p2-tag">書類添削・模擬面接</div>
+      <h3 class="p2-title">面接対策・<em>書類添削</em></h3>
+      <div class="p2-divider"></div>
+      <p class="p2-text">履歴書の書き方から面接の練習まで徹底サポート。日本の就職活動のマナーも一から丁寧に教えます。</p>
+    </div>
+  </div>
+
+  <!-- 5: 住居・生活サポート -->
+  <div class="p2-item">
+    <div class="p2-photo">
+      <img src="https://images.unsplash.com/photo-1758523670969-dd1b1254062d?w=900&q=85" alt="住居・生活サポート" />
+    </div>
+    <div class="p2-body">
+      <div class="p2-reason-num">REASON 05</div>
+      <div class="p2-tag">寮・社宅付き求人も多数</div>
+      <h3 class="p2-title">住居・生活を<em>丸ごとサポート</em></h3>
+      <div class="p2-divider"></div>
+      <p class="p2-text">就職後の住まい探しや生活に必要な手続きもサポート。寮・社宅付きの求人も多数ご用意しており、安心して新生活をスタートできます。</p>
+    </div>
+  </div>
+
+  <!-- 6: 内定実績 -->
+  <div class="p2-item">
+    <div class="p2-photo">
+      <img src="https://images.unsplash.com/photo-1549923746-c502d488b3ea?w=900&q=85" alt="内定実績・握手" />
+    </div>
+    <div class="p2-body">
+      <div class="p2-reason-num">REASON 06</div>
+      <div class="p2-tag">定着率82.3%</div>
+      <h3 class="p2-title">毎月200名以上が<em>内定獲得</em></h3>
+      <div class="p2-divider"></div>
+      <p class="p2-text">10,000名以上の紹介実績・定着率82.3%。豊富な実績と独自のマッチング力で、あなたにぴったりの職場をご紹介します。</p>
+    </div>
+  </div>
+</div>
+
+<!-- ===== CASES (導入事例) ===== -->
+<div id="cases">
+  <div class="cases-inner">
+    <div style="text-align:center; margin-bottom:36px;">
+      <span class="section-label">導入事例</span>
+      <h2 class="section-title">全国の企業様に<em>ご活用いただいています</em></h2>
       <div class="divider"></div>
     </div>
-    <div class="features-grid">
-      <div class="feature-card">
-        <div class="feature-icon">🌐</div>
-        <h3>母国語で相談OK</h3>
-        <p>ベトナム語・ミャンマー語・ネパール語など、母国語を話せるスタッフが在籍。日本語に不安があっても安心して相談できます。</p>
+
+    <!-- タブフィルター -->
+    <div class="cases-tabs">
+      <button class="cases-tab active" data-filter="all">すべて</button>
+      <button class="cases-tab" data-filter="飲食">🍽 飲食・レストラン</button>
+      <button class="cases-tab" data-filter="製造">🏭 製造・工場</button>
+      <button class="cases-tab" data-filter="建設">🏗 建設業</button>
+      <button class="cases-tab" data-filter="旅館">🏨 旅館・ホテル</button>
+      <button class="cases-tab" data-filter="サービス">🛠 サービス業</button>
+      <button class="cases-tab" data-filter="卸売">📦 卸売業</button>
+      <button class="cases-tab" data-filter="介護">🏥 介護・医療</button>
+    </div>
+    <div class="cases-count"><strong id="casesCount">30</strong> 件の事例を表示中</div>
+
+    <!-- カルーセル -->
+    <div class="cases-carousel-wrap">
+      <div class="cases-carousel" id="casesCarousel">
+
+        <a class="case-card" data-industry="飲食" href="https://note.com/_hitokiwa/n/n9ef1c82807ec" target="_blank" rel="noopener">
+          <img class="case-thumb" src="https://assets.st-note.com/production/uploads/images/252478425/333ce2e1c159ecbef8354803fd91fa24.png" alt="アルカション" loading="lazy">
+          <div class="case-body">
+            <div class="case-tags"><span class="case-tag-industry">飲食業</span><span class="case-tag-area">東京都</span></div>
+            <div class="case-company">アルカション</div>
+            <div class="case-title">「一生懸命働いてくれる方は国籍問わず」練馬の洋菓子店で活躍する外国人スタッフの採用事例</div>
+            <span class="case-read">記事を読む →</span>
+          </div>
+        </a>
+
+        <a class="case-card" data-industry="飲食" href="https://note.com/_hitokiwa/n/n5eab88cb4a9e" target="_blank" rel="noopener">
+          <img class="case-thumb" src="https://assets.st-note.com/production/uploads/images/246653094/a5b81b510d8185f518c0056d6311d451.png" alt="有限会社ベイクリエイト" loading="lazy">
+          <div class="case-body">
+            <div class="case-tags"><span class="case-tag-industry">飲食業</span><span class="case-tag-area">東京都</span></div>
+            <div class="case-company">有限会社ベイクリエイト</div>
+            <div class="case-title">「文化の違いを理解し、歩み寄ることから始める」フルーツカフェで活躍する外国人スタッフの採用事例</div>
+            <span class="case-read">記事を読む →</span>
+          </div>
+        </a>
+
+        <a class="case-card" data-industry="製造" href="https://note.com/_hitokiwa/n/nd483f89337cf" target="_blank" rel="noopener">
+          <img class="case-thumb" src="https://assets.st-note.com/production/uploads/images/253143479/e9ab70ecf89ca80eae9feed6472db48d.png" alt="株式会社イニュニック" loading="lazy">
+          <div class="case-body">
+            <div class="case-tags"><span class="case-tag-industry">製造業（印刷製本）</span><span class="case-tag-area">東京都</span></div>
+            <div class="case-company">株式会社イニュニック</div>
+            <div class="case-title">「飲み込みの早さ」が決め手に。印刷製本業界の人手不足を解消する戦略的外国人採用</div>
+            <span class="case-read">記事を読む →</span>
+          </div>
+        </a>
+
+        <a class="case-card" data-industry="卸売" href="https://note.com/_hitokiwa/n/n8da171133b85" target="_blank" rel="noopener">
+          <img class="case-thumb" src="https://assets.st-note.com/production/uploads/images/215854599/1b816a97364725760df5e996e3130254.png" alt="株式会社クサマ" loading="lazy">
+          <div class="case-body">
+            <div class="case-tags"><span class="case-tag-industry">卸売業・飲食業</span><span class="case-tag-area">東京都</span></div>
+            <div class="case-company">株式会社クサマ</div>
+            <div class="case-title">人手不足解消から始まった外国人採用が、現在も続く理由とは？</div>
+            <span class="case-read">記事を読む →</span>
+          </div>
+        </a>
+
+        <a class="case-card" data-industry="製造" href="https://note.com/_hitokiwa/n/n8f49ed4c4812" target="_blank" rel="noopener">
+          <img class="case-thumb" src="https://assets.st-note.com/production/uploads/images/226041167/6259f26700f28b17887ef2760af2af82.png" alt="株式会社大和合金製作所" loading="lazy">
+          <div class="case-body">
+            <div class="case-tags"><span class="case-tag-industry">製造業</span><span class="case-tag-area">徳島県</span></div>
+            <div class="case-company">株式会社大和合金製作所</div>
+            <div class="case-title">「人と人との縁」を大切に、アルミニウム鋳造業界で外国人採用を成功させる取り組み</div>
+            <span class="case-read">記事を読む →</span>
+          </div>
+        </a>
+
+        <a class="case-card" data-industry="介護" href="https://note.com/_hitokiwa/n/n4f3fa0d243b0" target="_blank" rel="noopener">
+          <img class="case-thumb" src="https://assets.st-note.com/production/uploads/images/226047203/142092947f9f5341bf7ed2b008efddeb.png" alt="株式会社エイ・ブレイン" loading="lazy">
+          <div class="case-body">
+            <div class="case-tags"><span class="case-tag-industry">介護・医療業</span><span class="case-tag-area">東京都</span></div>
+            <div class="case-company">株式会社エイ・ブレイン</div>
+            <div class="case-title">「長期的視点での投資」として外国人採用を成功させる、介護・医療業界の取り組み</div>
+            <span class="case-read">記事を読む →</span>
+          </div>
+        </a>
+
+        <a class="case-card" data-industry="卸売" href="https://note.com/_hitokiwa/n/n2c0963230dc0" target="_blank" rel="noopener">
+          <img class="case-thumb" src="https://assets.st-note.com/production/uploads/images/211075456/835df7908850b31270c44f3b75c2469d.png" alt="株式会社鳥安本店" loading="lazy">
+          <div class="case-body">
+            <div class="case-tags"><span class="case-tag-industry">卸売業</span><span class="case-tag-area">東京都</span></div>
+            <div class="case-company">株式会社鳥安本店</div>
+            <div class="case-title">老舗鶏肉卸売業が取り組んだ"早朝勤務×グローバル人材採用"という新たな挑戦</div>
+            <span class="case-read">記事を読む →</span>
+          </div>
+        </a>
+
+        <a class="case-card" data-industry="飲食" href="https://note.com/_hitokiwa/n/n171047691842" target="_blank" rel="noopener">
+          <img class="case-thumb" src="https://assets.st-note.com/production/uploads/images/211607203/f3430a50294e01c7396d43653c4160c8.png" alt="株式会社ファルコンレストランイノベーション" loading="lazy">
+          <div class="case-body">
+            <div class="case-tags"><span class="case-tag-industry">飲食業</span><span class="case-tag-area">神奈川県</span></div>
+            <div class="case-company">株式会社ファルコンレストランイノベーション</div>
+            <div class="case-title">求人に100万円かけても採用できない時代に「紹介料0円」で優秀な人材を獲得した横浜の中華料理店</div>
+            <span class="case-read">記事を読む →</span>
+          </div>
+        </a>
+
+        <a class="case-card" data-industry="製造" href="https://note.com/_hitokiwa/n/n9ed819044610" target="_blank" rel="noopener">
+          <img class="case-thumb" src="https://assets.st-note.com/production/uploads/images/207194599/17e140152456cbc6a16fd83e6f319dab.png" alt="株式会社ピカソ美化学研究所" loading="lazy">
+          <div class="case-body">
+            <div class="case-tags"><span class="case-tag-industry">製造業（化粧品）</span><span class="case-tag-area">大阪府</span></div>
+            <div class="case-company">株式会社ピカソ美化学研究所</div>
+            <div class="case-title">化粧品製造業が取り組んだ"大量採用×グローバル人材活用"という新たな挑戦</div>
+            <span class="case-read">記事を読む →</span>
+          </div>
+        </a>
+
+        <a class="case-card" data-industry="製造" href="https://note.com/_hitokiwa/n/nd9392504b9a5" target="_blank" rel="noopener">
+          <img class="case-thumb" src="https://assets.st-note.com/production/uploads/images/211173395/27c1586bf9b74820ff397dd1db935a2f.png" alt="ゼニスインターナショナル株式会社" loading="lazy">
+          <div class="case-body">
+            <div class="case-tags"><span class="case-tag-industry">製造業（洋菓子）</span><span class="case-tag-area">埼玉県</span></div>
+            <div class="case-company">ゼニスインターナショナル株式会社</div>
+            <div class="case-title">「求人広告に何十万円かけても成果なし」人手不足を乗り越え、外国人材で事業を拡大した洋菓子メーカーの挑戦</div>
+            <span class="case-read">記事を読む →</span>
+          </div>
+        </a>
+
+        <a class="case-card" data-industry="製造" href="https://note.com/_hitokiwa/n/ne2014fb2b5aa" target="_blank" rel="noopener">
+          <img class="case-thumb" src="https://assets.st-note.com/production/uploads/images/202959658/5c01b2384c3e1f77c5ccbba65cfa4cf3.png" alt="富士物産株式会社" loading="lazy">
+          <div class="case-body">
+            <div class="case-tags"><span class="case-tag-industry">製造業（製パン）</span><span class="case-tag-area">静岡県</span></div>
+            <div class="case-company">富士物産株式会社</div>
+            <div class="case-title">コストと人手不足の壁を乗り越える！富士物産株式会社が実現した外国人材採用の成功</div>
+            <span class="case-read">記事を読む →</span>
+          </div>
+        </a>
+
+        <a class="case-card" data-industry="旅館" href="https://note.com/_hitokiwa/n/n457550724957" target="_blank" rel="noopener">
+          <img class="case-thumb" src="https://assets.st-note.com/production/uploads/images/178510469/7b668f79021d4765aa5e47c2818baeb6.png" alt="有限会社山田家" loading="lazy">
+          <div class="case-body">
+            <div class="case-tags"><span class="case-tag-industry">温泉旅館</span><span class="case-tag-area">神奈川県</span></div>
+            <div class="case-company">有限会社山田家</div>
+            <div class="case-title">老舗温泉旅館が取り組んだ"観光活性化×グローバル人材採用"という新たな挑戦</div>
+            <span class="case-read">記事を読む →</span>
+          </div>
+        </a>
+
+        <a class="case-card" data-industry="サービス" href="https://note.com/_hitokiwa/n/ne93fad301f0a" target="_blank" rel="noopener">
+          <img class="case-thumb" src="https://assets.st-note.com/production/uploads/images/184697211/f8b6ea5c0e466ecb438d2d3387286a24.png" alt="株式会社ライフクリーニング" loading="lazy">
+          <div class="case-body">
+            <div class="case-tags"><span class="case-tag-industry">リネン業・クリーニング</span><span class="case-tag-area">神奈川県</span></div>
+            <div class="case-company">株式会社ライフクリーニング</div>
+            <div class="case-title">「熱意がある人材に、国籍の壁はない」グローバル人材が数多く働くクリーニング会社の思い</div>
+            <span class="case-read">記事を読む →</span>
+          </div>
+        </a>
+
+        <a class="case-card" data-industry="飲食" href="https://note.com/_hitokiwa/n/nd528c559f60f" target="_blank" rel="noopener">
+          <img class="case-thumb" src="https://assets.st-note.com/production/uploads/images/184699092/4507148b045f0ad36ec198071979e375.png" alt="株式会社Kspace" loading="lazy">
+          <div class="case-body">
+            <div class="case-tags"><span class="case-tag-industry">飲食業（カレー屋）</span><span class="case-tag-area">東京都</span></div>
+            <div class="case-company">株式会社Kspace</div>
+            <div class="case-title">「オーナーの右腕になれるよう頑張りたい」、向上心の高いグローバル人材採用に成功した飲食店</div>
+            <span class="case-read">記事を読む →</span>
+          </div>
+        </a>
+
+        <a class="case-card" data-industry="飲食" href="https://note.com/_hitokiwa/n/n2a54b4df489e" target="_blank" rel="noopener">
+          <img class="case-thumb" src="https://assets.st-note.com/production/uploads/images/198446710/789dbe4abd4af7a9eea31cb77676d744.png" alt="株式会社トライポッド" loading="lazy">
+          <div class="case-body">
+            <div class="case-tags"><span class="case-tag-industry">飲食業（ステーキ・バー）</span><span class="case-tag-area">東京都</span></div>
+            <div class="case-company">株式会社トライポッド</div>
+            <div class="case-title">「労働力ではなく戦える仲間として」深夜営業の飲食店が取り組むグローバル人材との共生</div>
+            <span class="case-read">記事を読む →</span>
+          </div>
+        </a>
+
+        <a class="case-card" data-industry="飲食" href="https://note.com/_hitokiwa/n/nb8a2f527767c" target="_blank" rel="noopener">
+          <img class="case-thumb" src="https://assets.st-note.com/production/uploads/images/199569489/d502b29ef55e64b383b7831056665896.png" alt="株式会社セキグチ" loading="lazy">
+          <div class="case-body">
+            <div class="case-tags"><span class="case-tag-industry">ベーカリー・パティスリー</span><span class="case-tag-area">埼玉県</span></div>
+            <div class="case-company">株式会社セキグチ</div>
+            <div class="case-title">地域に愛され、仲間に支えられる株式会社セキグチで見た"外国人採用"のリアル</div>
+            <span class="case-read">記事を読む →</span>
+          </div>
+        </a>
+
+        <a class="case-card" data-industry="建設" href="https://note.com/_hitokiwa/n/n59f0f4733786" target="_blank" rel="noopener">
+          <img class="case-thumb" src="https://assets.st-note.com/production/uploads/images/202164156/8bee12853aea5e3a7d7d3005130a9ab1.png" alt="株式会社Jaws plan" loading="lazy">
+          <div class="case-body">
+            <div class="case-tags"><span class="case-tag-industry">建設業（内装・リフォーム）</span><span class="case-tag-area">神奈川県</span></div>
+            <div class="case-company">株式会社Jaws plan</div>
+            <div class="case-title">外国人雇用のリアルと「紹介料0円」の衝撃：建設業界の人手不足を乗り越える</div>
+            <span class="case-read">記事を読む →</span>
+          </div>
+        </a>
+
+        <a class="case-card" data-industry="飲食" href="https://note.com/_hitokiwa/n/naaf2c363de9a" target="_blank" rel="noopener">
+          <img class="case-thumb" src="https://assets.st-note.com/production/uploads/images/202638082/f5a18f760cd121d54c9661840c76e630.png" alt="株式会社プラーナ" loading="lazy">
+          <div class="case-body">
+            <div class="case-tags"><span class="case-tag-industry">飲食業（ラーメン・唐揚げ）</span><span class="case-tag-area">神奈川県・茨城県</span></div>
+            <div class="case-company">株式会社プラーナ</div>
+            <div class="case-title">「労働力ではなく戦える仲間として」飲食店が取り組むグローバル人材との共生</div>
+            <span class="case-read">記事を読む →</span>
+          </div>
+        </a>
+
+        <a class="case-card" data-industry="製造" href="https://note.com/_hitokiwa/n/n1c7816bc557e" target="_blank" rel="noopener">
+          <img class="case-thumb" src="https://assets.st-note.com/production/uploads/images/202147627/ab0f895c1662c7a1cf6692f5f942cc96.png" alt="糸久商工株式会社" loading="lazy">
+          <div class="case-body">
+            <div class="case-tags"><span class="case-tag-industry">製造業（鋼製下地材）</span><span class="case-tag-area">埼玉県</span></div>
+            <div class="case-company">糸久商工株式会社</div>
+            <div class="case-title">他社から「当社もグローバル人材を採りたい！」と声が上がる、製造業会社のグローバル人材活用法</div>
+            <span class="case-read">記事を読む →</span>
+          </div>
+        </a>
+
+        <a class="case-card" data-industry="サービス" href="https://note.com/_hitokiwa/n/naf64786dab84" target="_blank" rel="noopener">
+          <img class="case-thumb" src="https://assets.st-note.com/production/uploads/images/202146238/60c9e603d8abee1d0025de95f26ff00a.png" alt="株式会社小郡車輌" loading="lazy">
+          <div class="case-body">
+            <div class="case-tags"><span class="case-tag-industry">自動車整備（板金・塗装）</span><span class="case-tag-area">福岡県</span></div>
+            <div class="case-company">株式会社小郡車輌</div>
+            <div class="case-title">塗装・外国人材採用で「不安」から「欠かせない戦力」への変化を語る</div>
+            <span class="case-read">記事を読む →</span>
+          </div>
+        </a>
+
+        <a class="case-card" data-industry="製造" href="https://note.com/_hitokiwa/n/nb761fab3d68f" target="_blank" rel="noopener">
+          <img class="case-thumb" src="https://assets.st-note.com/production/uploads/images/201562722/9427b3d57620d24282e7708183e893c0.png" alt="株式会社THE TEA COMPANY" loading="lazy">
+          <div class="case-body">
+            <div class="case-tags"><span class="case-tag-industry">製造業（ボトル茶）</span><span class="case-tag-area">東京都</span></div>
+            <div class="case-company">株式会社THE TEA COMPANY</div>
+            <div class="case-title">「日本人・外国人問わず、人柄と意欲を重視」ボトル茶メーカーのグローバル人材採用</div>
+            <span class="case-read">記事を読む →</span>
+          </div>
+        </a>
+
+        <a class="case-card" data-industry="飲食" href="https://note.com/_hitokiwa/n/nff4aedcd4a08" target="_blank" rel="noopener">
+          <img class="case-thumb" src="https://assets.st-note.com/production/uploads/images/201342019/c4d56a12ed25c5f5fe19f775b6fc5438.png" alt="株式会社Days" loading="lazy">
+          <div class="case-body">
+            <div class="case-tags"><span class="case-tag-industry">飲食業（カレーハウスFC）</span><span class="case-tag-area">静岡県</span></div>
+            <div class="case-company">株式会社Days</div>
+            <div class="case-title">「ミャンマー人スタッフの働きぶりと成長ストーリー」カレーハウスFCの外国人材採用</div>
+            <span class="case-read">記事を読む →</span>
+          </div>
+        </a>
+
+        <a class="case-card" data-industry="製造" href="https://note.com/_hitokiwa/n/na6f2d6fa64b9" target="_blank" rel="noopener">
+          <img class="case-thumb" src="https://assets.st-note.com/production/uploads/images/202713389/98213d933eee652df5ffa6d6202d00ae.png" alt="株式会社久月" loading="lazy">
+          <div class="case-body">
+            <div class="case-tags"><span class="case-tag-industry">和洋菓子製造販売</span><span class="case-tag-area">茨城県</span></div>
+            <div class="case-company">株式会社久月</div>
+            <div class="case-title">「熱意がある人材に、国籍の壁はない」グローバル人材が数多く働く株式会社久月の思い</div>
+            <span class="case-read">記事を読む →</span>
+          </div>
+        </a>
+
+        <a class="case-card" data-industry="旅館" href="https://note.com/_hitokiwa/n/n6c6661565a11" target="_blank" rel="noopener">
+          <img class="case-thumb" src="https://assets.st-note.com/production/uploads/images/202954344/80eda96ed369d77a743464c205fa32b5.png" alt="株式会社ゴガクソウ" loading="lazy">
+          <div class="case-body">
+            <div class="case-tags"><span class="case-tag-industry">ホテル・宿泊業</span><span class="case-tag-area">熊本県</span></div>
+            <div class="case-company">株式会社ゴガクソウ</div>
+            <div class="case-title">「コストゼロで多施設を支える人材確保を実現」成長企業が語る外国人材活用の成功法則</div>
+            <span class="case-read">記事を読む →</span>
+          </div>
+        </a>
+
+        <a class="case-card" data-industry="サービス" href="https://note.com/_hitokiwa/n/ned7bdc585f21" target="_blank" rel="noopener">
+          <img class="case-thumb" src="https://assets.st-note.com/production/uploads/images/213102813/5f25b3271d654b14737a21a43c2b4a9b.png" alt="ミリオン株式会社" loading="lazy">
+          <div class="case-body">
+            <div class="case-tags"><span class="case-tag-industry">コンビニ運営</span><span class="case-tag-area">大阪府</span></div>
+            <div class="case-company">ミリオン株式会社</div>
+            <div class="case-title">外国人スタッフと一緒に、地域に根ざしたお店づくり。ミリオン株式会社が描く"多国籍チーム"のリアル</div>
+            <span class="case-read">記事を読む →</span>
+          </div>
+        </a>
+
+        <a class="case-card" data-industry="飲食" href="https://note.com/_hitokiwa/n/n56baf008c166" target="_blank" rel="noopener">
+          <img class="case-thumb" src="https://assets.st-note.com/production/uploads/images/202350037/b465c4459dfd552daaa2480009fdfc24.png" alt="株式会社凪スピリッツジャパン" loading="lazy">
+          <div class="case-body">
+            <div class="case-tags"><span class="case-tag-industry">外食業（ラーメンチェーン）</span><span class="case-tag-area">東京都</span></div>
+            <div class="case-company">株式会社凪スピリッツジャパン</div>
+            <div class="case-title">「真面目に働いてくださる方が多くて、相乗効果が生まれている」ラーメンチェーンの外国人材採用</div>
+            <span class="case-read">記事を読む →</span>
+          </div>
+        </a>
+
+        <a class="case-card" data-industry="建設" href="https://note.com/_hitokiwa/n/n320feed34548" target="_blank" rel="noopener">
+          <img class="case-thumb" src="https://assets.st-note.com/production/uploads/images/200188331/9263cef0168500c7e23507646268412f.png" alt="株式会社千織園" loading="lazy">
+          <div class="case-body">
+            <div class="case-tags"><span class="case-tag-industry">造園業</span><span class="case-tag-area">神奈川県</span></div>
+            <div class="case-company">株式会社千織園</div>
+            <div class="case-title">「即戦力として活躍中！造園業の現場で感じた可能性」</div>
+            <span class="case-read">記事を読む →</span>
+          </div>
+        </a>
+
+        <a class="case-card" data-industry="飲食" href="https://note.com/_hitokiwa/n/n605c3a69d92e" target="_blank" rel="noopener">
+          <img class="case-thumb" src="https://assets.st-note.com/production/uploads/images/206987111/69baa83b9e39f3b145a8f2a5c72db5f1.png" alt="シーフードレストラン ネプチューン" loading="lazy">
+          <div class="case-body">
+            <div class="case-tags"><span class="case-tag-industry">飲食業（シーフード）</span><span class="case-tag-area">東京都</span></div>
+            <div class="case-company">シーフードレストラン ネプチューン</div>
+            <div class="case-title">創業50年のシーフードレストラン「ネプチューン」が語る外国人採用成功の秘訣</div>
+            <span class="case-read">記事を読む →</span>
+          </div>
+        </a>
+
+        <a class="case-card" data-industry="建設" href="https://note.com/_hitokiwa/n/ne36aff0e7bd3" target="_blank" rel="noopener">
+          <img class="case-thumb" src="https://assets.st-note.com/production/uploads/images/211486801/6c130f330d752143fcd81008bb7977b0.png" alt="株式会社眞技建" loading="lazy">
+          <div class="case-body">
+            <div class="case-tags"><span class="case-tag-industry">建設業（防水工事）</span><span class="case-tag-area">東京都</span></div>
+            <div class="case-company">株式会社眞技建</div>
+            <div class="case-title">建設業界が取り組んだ"技術継承×グローバル人材活用"という新たな挑戦</div>
+            <span class="case-read">記事を読む →</span>
+          </div>
+        </a>
+
+        <a class="case-card" data-industry="製造" href="https://note.com/_hitokiwa/n/n7c7abc6875c6" target="_blank" rel="noopener">
+          <img class="case-thumb" src="https://assets.st-note.com/production/uploads/images/207206426/e6f3abfdb5e0f4fdf9745778f77a2c0f.png" alt="町田食品株式会社" loading="lazy">
+          <div class="case-body">
+            <div class="case-tags"><span class="case-tag-industry">食品製造</span><span class="case-tag-area">静岡県</span></div>
+            <div class="case-company">町田食品株式会社</div>
+            <div class="case-title">170年続く老舗食品メーカーが取り組んだ"伝統×多様性"という新たな挑戦</div>
+            <span class="case-read">記事を読む →</span>
+          </div>
+        </a>
+
       </div>
-      <div class="feature-card">
-        <div class="feature-icon">💼</div>
-        <h3>全職種・全国対応</h3>
-        <p>製造業・飲食・介護・IT・事務など幅広い職種に対応。北海道から沖縄まで全国の求人を紹介できます。</p>
-      </div>
-      <div class="feature-card">
-        <div class="feature-icon">📋</div>
-        <h3>ビザ・在留サポート</h3>
-        <p>就労ビザの手続きや在留資格の確認もサポート。複雑な手続きもスタッフが丁寧に案内します。</p>
-      </div>
-      <div class="feature-card">
-        <div class="feature-icon">🎯</div>
-        <h3>面接対策・書類添削</h3>
-        <p>履歴書の書き方から面接の練習まで徹底サポート。日本の就職活動のマナーも一から教えます。</p>
-      </div>
-      <div class="feature-card">
-        <div class="feature-icon">🏠</div>
-        <h3>住居・生活サポート</h3>
-        <p>就職後の住まい探しや生活に必要な手続きもサポート。安心して新生活をスタートできます。</p>
-      </div>
-      <div class="feature-card">
-        <div class="feature-icon">🏆</div>
-        <h3>毎月200名以上が内定</h3>
-        <p>10,000名以上の紹介実績・幅広い求人。多くの求職者を日本企業につないできた実績があり、様々な業種・職種の求人からベストマッチな仕事を紹介します。</p>
-      </div>
+    </div>
+
+    <!-- 矢印＋ドットナビ -->
+    <div class="cases-nav">
+      <button class="cases-arrow" id="casesPrev">←</button>
+      <div class="cases-dots" id="casesDots"></div>
+      <button class="cases-arrow" id="casesNext">→</button>
     </div>
   </div>
 </div>
@@ -818,37 +1718,71 @@
 <!-- ===== FLOW ===== -->
 <div id="flow">
   <div class="flow-inner">
-    <div style="text-align:center; margin-bottom:40px;">
+    <div style="text-align:center; margin-bottom:52px;">
       <span class="section-label">ご利用の流れ</span>
       <h2 class="section-title">就職まで<em>4ステップ</em></h2>
       <div class="divider"></div>
     </div>
-    <div class="flow-step">
-      <div class="step-num">1</div>
-      <div class="step-body">
-        <h4>📩 無料相談・登録</h4>
-        <p>フォームからお申し込みください。担当スタッフがあなたの希望やご状況をヒアリングします。</p>
+    <div class="flow-steps">
+      <!-- STEP 01 -->
+      <div class="flow-step">
+        <div class="flow-num-col">
+          <div class="flow-big-num">01</div>
+        </div>
+        <div class="flow-line-col">
+          <div class="flow-dot"></div>
+          <div class="flow-vert"></div>
+        </div>
+        <div class="flow-body">
+          <div class="flow-step-tag">STEP 01 ／ 完全無料</div>
+          <h3>📩 無料相談・<em>登録</em></h3>
+          <p>フォームからお申し込みください。担当スタッフがあなたの希望やご状況をヒアリングし、最適なサポートプランをご提案します。</p>
+        </div>
       </div>
-    </div>
-    <div class="flow-step">
-      <div class="step-num">2</div>
-      <div class="step-body">
-        <h4>🔍 求人紹介・マッチング</h4>
-        <p>希望職種・エリア・条件に合った求人をご提案。豊富な求人の中からベストな仕事を一緒に探します。</p>
+      <!-- STEP 02 -->
+      <div class="flow-step">
+        <div class="flow-num-col">
+          <div class="flow-big-num">02</div>
+        </div>
+        <div class="flow-line-col">
+          <div class="flow-dot"></div>
+          <div class="flow-vert"></div>
+        </div>
+        <div class="flow-body">
+          <div class="flow-step-tag">STEP 02</div>
+          <h3>🔍 求人紹介・<em>マッチング</em></h3>
+          <p>希望職種・エリア・条件に合った求人をご提案。2,276社以上の豊富な求人の中からベストな仕事を一緒に探します。</p>
+        </div>
       </div>
-    </div>
-    <div class="flow-step">
-      <div class="step-num">3</div>
-      <div class="step-body">
-        <h4>📝 書類作成・面接準備</h4>
-        <p>履歴書の添削・面接練習を実施。日本の企業文化に合わせた対策で内定率アップ。</p>
+      <!-- STEP 03 -->
+      <div class="flow-step">
+        <div class="flow-num-col">
+          <div class="flow-big-num">03</div>
+        </div>
+        <div class="flow-line-col">
+          <div class="flow-dot"></div>
+          <div class="flow-vert"></div>
+        </div>
+        <div class="flow-body">
+          <div class="flow-step-tag">STEP 03</div>
+          <h3>📝 書類作成・<em>面接準備</em></h3>
+          <p>履歴書の添削・面接練習を徹底サポート。日本の企業文化に合わせた対策で内定率をアップします。</p>
+        </div>
       </div>
-    </div>
-    <div class="flow-step">
-      <div class="step-num">4</div>
-      <div class="step-body">
-        <h4>🎉 内定・就職スタート！</h4>
-        <p>内定後も入社手続きや生活サポートを継続。安心して新しい職場でスタートを切れます。</p>
+      <!-- STEP 04 -->
+      <div class="flow-step">
+        <div class="flow-num-col">
+          <div class="flow-big-num">04</div>
+        </div>
+        <div class="flow-line-col">
+          <div class="flow-dot"></div>
+          <div class="flow-vert"></div>
+        </div>
+        <div class="flow-body">
+          <div class="flow-step-tag">STEP 04 ／ 内定後も継続サポート</div>
+          <h3>🎉 内定・<em>就職スタート！</em></h3>
+          <p>内定後も入社手続きや生活サポートを継続。住まい探しから役所の手続きまで、安心して新しい職場・新生活をスタートできます。</p>
+        </div>
       </div>
     </div>
   </div>
@@ -857,51 +1791,129 @@
 <!-- ===== VOICES ===== -->
 <div id="voices">
   <div class="voices-inner">
-    <div style="text-align:center; margin-bottom:40px;">
+    <div style="text-align:center; margin-bottom:36px;">
       <span class="section-label">就職者の声</span>
       <h2 class="section-title"><em>内定者</em>からのメッセージ</h2>
       <div class="divider"></div>
     </div>
-    <div class="voices-grid">
-      <div class="voice-card">
-        <div class="voice-header">
-          <div class="voice-avatar">
-            <img src="https://images.unsplash.com/photo-1580489944761-15a19d654956?w=200&q=80" alt="グエン・ティ・フォン" />
+
+    <!-- 国籍タブ -->
+    <div class="voices-tabs">
+      <button class="voices-tab active" data-nat="all">すべて</button>
+      <button class="voices-tab" data-nat="ベトナム">🇻🇳 ベトナム</button>
+      <button class="voices-tab" data-nat="ミャンマー">🇲🇲 ミャンマー</button>
+      <button class="voices-tab" data-nat="ネパール">🇳🇵 ネパール</button>
+      <button class="voices-tab" data-nat="インドネシア">🇮🇩 インドネシア</button>
+      <button class="voices-tab" data-nat="スリランカ">🇱🇰 スリランカ</button>
+    </div>
+
+    <!-- カルーセル -->
+    <div class="voices-carousel-wrap">
+      <div class="voices-carousel" id="voicesCarousel">
+
+        <!-- 1: グエン・ティ・フォン（ベトナム・飲食） -->
+        <div class="voice-card" data-nationality="ベトナム">
+          <div class="voice-photo">
+            <img src="https://images.unsplash.com/photo-1580489944761-15a19d654956?w=600&q=80" alt="グエン・ティ・フォン" />
+            <div class="voice-job-badge">🍽 飲食業</div>
+            <div class="voice-achievement"><span class="ach-big">2週間</span>で内定！</div>
+            <div class="voice-country">🇻🇳 ベトナム出身</div>
           </div>
-          <div>
-            <div class="voice-name">グエン・ティ・フォン さん</div>
-            <div class="voice-meta">ベトナム出身 ／ 事務職に就職</div>
-          </div>
-        </div>
-        <div class="voice-stars">★★★★★</div>
-        <p>日本語があまり上手くないまま相談しましたが、ベトナム語で丁寧に説明してもらえました。書類の書き方も面接の練習も全部サポートしてもらって、希望通りの会社に就職できました！</p>
-      </div>
-      <div class="voice-card">
-        <div class="voice-header">
-          <div class="voice-avatar">
-            <img src="https://images.unsplash.com/photo-1537368910025-700350fe46c7?w=200&q=80" alt="チョウ・ゾー" />
-          </div>
-          <div>
-            <div class="voice-name">チョウ・ゾー さん</div>
-            <div class="voice-meta">ミャンマー出身 ／ 製造業に就職</div>
-          </div>
-        </div>
-        <div class="voice-stars">★★★★★</div>
-        <p>ビザのことが心配でしたが、全部説明してもらえて安心しました。寮付きの仕事を紹介してもらえたので、住む場所も一緒に解決できました。とても感謝しています。</p>
-      </div>
-      <div class="voice-card">
-        <div class="voice-header">
-          <div class="voice-avatar">
-            <img src="https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?w=200&q=80" alt="プリヤ・シャルマ" />
-          </div>
-          <div>
-            <div class="voice-name">プリヤ・シャルマ さん</div>
-            <div class="voice-meta">ネパール出身 ／ 介護職に就職</div>
+          <div class="voice-body">
+            <div class="voice-name-row">
+              <div class="voice-name">グエン・ティ・フォン さん</div>
+              <div class="voice-stars">★★★★★</div>
+            </div>
+            <div class="voice-bubble">
+              <p>日本語があまり上手くないまま相談しましたが、ベトナム語で丁寧に説明してもらえました。書類の書き方も面接の練習も全部サポートしてもらって、希望通りの会社に就職できました！</p>
+            </div>
           </div>
         </div>
-        <div class="voice-stars">★★★★★</div>
-        <p>介護の仕事をしたかったのに資格がなくて諦めていました。ヒトキワさんが研修付きの求人を紹介してくれて、資格を取りながら働けています。本当に良かったです！</p>
+
+        <!-- 2: チョウ・ゾー（ミャンマー・製造） -->
+        <div class="voice-card" data-nationality="ミャンマー">
+          <div class="voice-photo">
+            <img src="https://images.unsplash.com/photo-1537368910025-700350fe46c7?w=600&q=80" alt="チョウ・ゾー" />
+            <div class="voice-job-badge">🏭 製造業</div>
+            <div class="voice-achievement"><span class="ach-big">寮付き</span>求人に就職！</div>
+            <div class="voice-country">🇲🇲 ミャンマー出身</div>
+          </div>
+          <div class="voice-body">
+            <div class="voice-name-row">
+              <div class="voice-name">チョウ・ゾー さん</div>
+              <div class="voice-stars">★★★★★</div>
+            </div>
+            <div class="voice-bubble">
+              <p>ビザのことが心配でしたが、全部説明してもらえて安心しました。寮付きの仕事を紹介してもらえたので、住む場所も一緒に解決できました。とても感謝しています。</p>
+            </div>
+          </div>
+        </div>
+
+        <!-- 3: プリヤ・シャルマ（ネパール・介護） -->
+        <div class="voice-card" data-nationality="ネパール">
+          <div class="voice-photo">
+            <img src="https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?w=600&q=80" alt="プリヤ・シャルマ" />
+            <div class="voice-job-badge">🏥 介護・医療</div>
+            <div class="voice-achievement"><span class="ach-big">資格取得</span>しながら就職！</div>
+            <div class="voice-country">🇳🇵 ネパール出身</div>
+          </div>
+          <div class="voice-body">
+            <div class="voice-name-row">
+              <div class="voice-name">プリヤ・シャルマ さん</div>
+              <div class="voice-stars">★★★★★</div>
+            </div>
+            <div class="voice-bubble">
+              <p>介護の仕事をしたかったのに資格がなくて諦めていました。ヒトキワさんが研修付きの求人を紹介してくれて、資格を取りながら働けています。本当に良かったです！</p>
+            </div>
+          </div>
+        </div>
+
+        <!-- 4: アフマド・ファウジ（インドネシア・建設） -->
+        <div class="voice-card" data-nationality="インドネシア">
+          <div class="voice-photo">
+            <img src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=600&q=80" alt="アフマド・ファウジ" />
+            <div class="voice-job-badge">🏗 建設業</div>
+            <div class="voice-achievement"><span class="ach-big">3週間</span>で内定！</div>
+            <div class="voice-country">🇮🇩 インドネシア出身</div>
+          </div>
+          <div class="voice-body">
+            <div class="voice-name-row">
+              <div class="voice-name">アフマド・ファウジ さん</div>
+              <div class="voice-stars">★★★★★</div>
+            </div>
+            <div class="voice-bubble">
+              <p>建設の仕事を希望していましたが、ビザの手続きが複雑で不安でした。ヒトキワさんにインドネシア語で全部説明してもらえて、書類も一緒に準備できました。今は現場で毎日やりがいを感じています！</p>
+            </div>
+          </div>
+        </div>
+
+        <!-- 5: カウシャル・ペレラ（スリランカ・宿泊業） -->
+        <div class="voice-card" data-nationality="スリランカ">
+          <div class="voice-photo">
+            <img src="https://images.unsplash.com/photo-1519085360753-af0119f7cbe7?w=600&q=80" alt="カウシャル・ペレラ" />
+            <div class="voice-job-badge">🏨 宿泊業</div>
+            <div class="voice-achievement"><span class="ach-big">正社員</span>として就職！</div>
+            <div class="voice-country">🇱🇰 スリランカ出身</div>
+          </div>
+          <div class="voice-body">
+            <div class="voice-name-row">
+              <div class="voice-name">カウシャル・ペレラ さん</div>
+              <div class="voice-stars">★★★★★</div>
+            </div>
+            <div class="voice-bubble">
+              <p>ホテルで働くのが夢でしたが、日本語に自信がなくて諦めかけていました。ヒトキワさんが英語で丁寧に対応してくれて、面接練習も重ねた結果、ホテルの正社員として採用されました。本当に感謝しています。</p>
+            </div>
+          </div>
+        </div>
+
       </div>
+    </div>
+
+    <!-- 矢印＋ドットナビ -->
+    <div class="voices-nav">
+      <button class="voices-arrow" id="voicesPrev">←</button>
+      <div class="voices-dots" id="voicesDots"></div>
+      <button class="voices-arrow" id="voicesNext">→</button>
     </div>
   </div>
 </div>
@@ -991,10 +2003,222 @@
 </div>
 
 <script>
+// FAQ
 function toggleFaq(btn) {
   const item = btn.closest('.faq-item');
   item.classList.toggle('open');
 }
+
+// スライドショー
+(function() {
+  const slides = document.querySelectorAll('.hero-slide');
+  let current = 0;
+  setInterval(() => {
+    slides[current].classList.remove('active');
+    current = (current + 1) % slides.length;
+    slides[current].classList.add('active');
+  }, 4500);
+})();
+
+// カウントアップアニメーション
+function animateCountUp(el) {
+  const target = parseFloat(el.dataset.target);
+  const isDecimal = el.dataset.decimal === 'true';
+  const useComma = el.dataset.comma === 'true';
+  const duration = 2000;
+  const start = performance.now();
+
+  function format(val) {
+    if (isDecimal) return val.toFixed(1);
+    const num = Math.floor(val);
+    return useComma ? num.toLocaleString('ja-JP') : String(num);
+  }
+
+  function step(now) {
+    const elapsed = now - start;
+    const progress = Math.min(elapsed / duration, 1);
+    const ease = 1 - Math.pow(1 - progress, 3);
+    el.textContent = format(target * ease);
+    if (progress < 1) requestAnimationFrame(step);
+  }
+  requestAnimationFrame(step);
+}
+
+window.addEventListener('load', () => {
+  setTimeout(() => {
+    document.querySelectorAll('.count-up').forEach(el => animateCountUp(el));
+  }, 1200);
+});
+
+// ===== 導入事例 カルーセル＋タブフィルター =====
+(function() {
+  const carousel  = document.getElementById('casesCarousel');
+  const dotsWrap  = document.getElementById('casesDots');
+  const prevBtn   = document.getElementById('casesPrev');
+  const nextBtn   = document.getElementById('casesNext');
+  const countEl   = document.getElementById('casesCount');
+  const tabs      = document.querySelectorAll('.cases-tab');
+  const allCards  = [...document.querySelectorAll('#casesCarousel .case-card')];
+  const PER_PAGE  = 3; // 1ページに表示する枚数
+  let currentPage = 0;
+
+  function getVisible() {
+    return allCards.filter(c => !c.classList.contains('cases-hidden'));
+  }
+
+  function totalPages(visible) {
+    return Math.max(1, Math.ceil(visible.length / PER_PAGE));
+  }
+
+  function buildDots(pages) {
+    dotsWrap.innerHTML = '';
+    for (let i = 0; i < pages; i++) {
+      const btn = document.createElement('button');
+      btn.className = 'cases-dot' + (i === currentPage ? ' active' : '');
+      btn.addEventListener('click', () => goTo(i));
+      dotsWrap.appendChild(btn);
+    }
+  }
+
+  function updateDots(pages) {
+    dotsWrap.querySelectorAll('.cases-dot').forEach((d, i) =>
+      d.classList.toggle('active', i === currentPage));
+    prevBtn.disabled = currentPage === 0;
+    nextBtn.disabled = currentPage >= pages - 1;
+  }
+
+  function goTo(page) {
+    const visible = getVisible();
+    const pages   = totalPages(visible);
+    currentPage   = Math.max(0, Math.min(pages - 1, page));
+
+    // 表示中カードのうちcurrentPage*PER_PAGE番目にスクロール
+    const targetIndex = currentPage * PER_PAGE;
+    if (visible[targetIndex]) {
+      visible[targetIndex].scrollIntoView({ behavior: 'smooth', block: 'nearest', inline: 'start' });
+    }
+    updateDots(pages);
+  }
+
+  function applyFilter(filter) {
+    allCards.forEach(card => {
+      const match = filter === 'all' || card.dataset.industry === filter;
+      card.classList.toggle('cases-hidden', !match);
+    });
+    const visible = getVisible();
+    countEl.textContent = visible.length;
+    currentPage = 0;
+    carousel.scrollTo({ left: 0, behavior: 'instant' });
+    buildDots(totalPages(visible));
+    updateDots(totalPages(visible));
+  }
+
+  // タブクリック
+  tabs.forEach(tab => {
+    tab.addEventListener('click', () => {
+      tabs.forEach(t => t.classList.remove('active'));
+      tab.classList.add('active');
+      applyFilter(tab.dataset.filter);
+    });
+  });
+
+  // 矢印
+  prevBtn.addEventListener('click', () => goTo(currentPage - 1));
+  nextBtn.addEventListener('click', () => goTo(currentPage + 1));
+
+  // スクロールでドット同期
+  carousel.addEventListener('scroll', () => {
+    const visible = getVisible();
+    if (!visible.length) return;
+    const firstRect = carousel.getBoundingClientRect().left;
+    // 最も左に近いvisibleカードのインデックスから現在ページを逆算
+    let closestIdx = 0;
+    let minDist = Infinity;
+    visible.forEach((card, i) => {
+      const dist = Math.abs(card.getBoundingClientRect().left - firstRect);
+      if (dist < minDist) { minDist = dist; closestIdx = i; }
+    });
+    currentPage = Math.floor(closestIdx / PER_PAGE);
+    updateDots(totalPages(visible));
+  }, { passive: true });
+
+  // 初期化
+  applyFilter('all');
+})();
+
+// ===== 就職者の声 カルーセル＋国籍タブ =====
+(function() {
+  const carousel  = document.getElementById('voicesCarousel');
+  const dotsWrap  = document.getElementById('voicesDots');
+  const prevBtn   = document.getElementById('voicesPrev');
+  const nextBtn   = document.getElementById('voicesNext');
+  const tabs      = document.querySelectorAll('.voices-tab');
+  const allCards  = [...document.querySelectorAll('#voicesCarousel .voice-card')];
+  const PER_PAGE  = 3;
+  let currentPage = 0;
+
+  function getVisible() {
+    return allCards.filter(c => !c.classList.contains('voices-hidden'));
+  }
+  function totalPages(visible) {
+    return Math.max(1, Math.ceil(visible.length / PER_PAGE));
+  }
+  function buildDots(pages) {
+    dotsWrap.innerHTML = '';
+    for (let i = 0; i < pages; i++) {
+      const btn = document.createElement('button');
+      btn.className = 'voices-dot' + (i === currentPage ? ' active' : '');
+      btn.addEventListener('click', () => goTo(i));
+      dotsWrap.appendChild(btn);
+    }
+  }
+  function updateDots(pages) {
+    dotsWrap.querySelectorAll('.voices-dot').forEach((d, i) =>
+      d.classList.toggle('active', i === currentPage));
+    prevBtn.disabled = currentPage === 0;
+    nextBtn.disabled = currentPage >= pages - 1;
+  }
+  function goTo(page) {
+    const visible = getVisible();
+    const pages   = totalPages(visible);
+    currentPage   = Math.max(0, Math.min(pages - 1, page));
+    const target  = visible[currentPage * PER_PAGE];
+    if (target) target.scrollIntoView({ behavior: 'smooth', block: 'nearest', inline: 'start' });
+    updateDots(pages);
+  }
+  function applyNat(nat) {
+    allCards.forEach(card => {
+      card.classList.toggle('voices-hidden', nat !== 'all' && card.dataset.nationality !== nat);
+    });
+    currentPage = 0;
+    carousel.scrollTo({ left: 0, behavior: 'instant' });
+    const visible = getVisible();
+    buildDots(totalPages(visible));
+    updateDots(totalPages(visible));
+  }
+  tabs.forEach(tab => {
+    tab.addEventListener('click', () => {
+      tabs.forEach(t => t.classList.remove('active'));
+      tab.classList.add('active');
+      applyNat(tab.dataset.nat);
+    });
+  });
+  prevBtn.addEventListener('click', () => goTo(currentPage - 1));
+  nextBtn.addEventListener('click', () => goTo(currentPage + 1));
+  carousel.addEventListener('scroll', () => {
+    const visible = getVisible();
+    if (!visible.length) return;
+    const base = carousel.getBoundingClientRect().left;
+    let minDist = Infinity, closestIdx = 0;
+    visible.forEach((card, i) => {
+      const dist = Math.abs(card.getBoundingClientRect().left - base);
+      if (dist < minDist) { minDist = dist; closestIdx = i; }
+    });
+    currentPage = Math.floor(closestIdx / PER_PAGE);
+    updateDots(totalPages(visible));
+  }, { passive: true });
+  applyNat('all');
+})();
 </script>
 
 <!-- ===== FORM ===== -->
@@ -1063,6 +2287,14 @@ function toggleFaq(btn) {
   <p class="company-name">株式会社ヒトキワ</p>
   <p>© 2026 Hitokiwa Co., Ltd. All rights reserved.</p>
 </footer>
+
+<!-- ===== LINE FLOATING BUTTON ===== -->
+<a class="line-float" href="https://lin.ee/hitokiwa" target="_blank" rel="noopener">
+  <svg viewBox="0 0 24 24" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+    <path d="M12 2C6.48 2 2 6.08 2 11.1c0 2.7 1.3 5.12 3.35 6.82-.15.52-.97 3.33-.97 3.33s-.06.25.13.34c.19.09.37-.04.37-.04l3.74-2.05c.99.27 2.03.42 3.11.42 5.52 0 10-4.08 10-9.1C22 6.08 17.52 2 12 2zm-3.5 12.5H6.25V9h1.5v4.25H8.5v1.25zm2.25 0h-1.5V9h1.5v5.5zm4.5 0h-1.5l-2-3.25v3.25h-1.5V9h1.5l2 3.25V9h1.5v5.5zm2.5-4.25h-1.75V9h1.75v1.25zm0 3h-1.75v-1.25h1.75v1.25z"/>
+  </svg>
+  LINEで相談する
+</a>
 
 </body>
 </html>
