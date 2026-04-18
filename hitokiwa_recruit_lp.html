@@ -44,7 +44,6 @@
       text-decoration: none;
       flex-shrink: 0;
       padding-left: 24px;
-      margin-bottom: 30px;
     }
 
     .header-logo img { height: 60px; width: auto; display: block; vertical-align: middle; }
@@ -1174,8 +1173,30 @@
 
     /* ===== MOBILE ===== */
     @media (max-width: 768px) {
+      body { padding-top: 70px; }
+      html { scroll-padding-top: 70px; }
+
+      /* ヘッダー：高さを70pxに縮小 */
+      .site-header { height: 70px; }
+
+      /* ロゴ画像を小さく */
+      .header-logo img { height: 44px; }
+
+      /* ナビは非表示 */
       .header-nav { display: none; }
-      .header-logo { margin-right: 0; }
+
+      /* LINEはフローティングボタンがあるので非表示、お問い合わせ・電話相談をコンパクトに */
+      .hbtn-line { display: none; }
+      .hbtn-contact,
+      .hbtn-tel {
+        font-size: 11px;
+        padding: 0 10px;
+        height: 38px;
+        border-radius: 6px;
+        gap: 3px;
+      }
+      .header-btns { gap: 6px; padding-right: 12px; }
+
       .hero-stats { gap: 10px; }
       .stat-card { min-width: 130px; padding: 16px 18px; }
       .hero-ctas { flex-direction: column; align-items: center; }
@@ -1189,8 +1210,6 @@
 
     @media (max-width: 600px) {
       .form-box { padding: 28px 18px; }
-      .hbtn { font-size: 12px; padding: 9px 12px; }
-      .header-btns { gap: 6px; }
     }
   </style>
 </head>
